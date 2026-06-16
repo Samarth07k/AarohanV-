@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Lo-Fi Café tokens */
+  --al-bg: #fdfbf7;
+  --al-primary: #8a9a86;
+  --al-secondary: #e6d9c8;
+  --al-accent: #d35400;
+  --al-ochre: #a67c52;
+  --al-text: #3e2723;
+  --al-primary-600: #73836f;
+  --al-primary-300: #a8b5a4;
+  --al-glass-fill: rgba(253, 251, 247, 0.6);
+  --al-glass-stroke: rgba(62, 39, 35, 0.10);
+  --al-shadow-soft: 0 6px 24px rgba(62, 39, 35, 0.07);
+  --al-shadow-lift: 0 14px 44px rgba(62, 39, 35, 0.12);
+}
+
+@layer base {
+  * {
+    border-color: var(--al-glass-stroke);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--al-bg);
+    color: var(--al-text);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', ui-serif, Georgia, serif;
+    color: var(--al-text);
+    line-height: 1.12;
+  }
+}
+
+@layer components {
+  /* Glassmorphism recipe (Blueprint 5.2) */
+  .al-glass-card {
+    background: var(--al-glass-fill);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid var(--al-glass-stroke);
+    border-radius: 20px;
+    box-shadow: var(--al-shadow-soft);
+    transition: box-shadow 0.2s ease-out, transform 0.2s ease-out;
+  }
+  .al-glass-card:hover {
+    box-shadow: var(--al-shadow-lift);
+  }
+
+  /* Layered botanical background gradients for hero / sections */
+  .al-botanical-bg {
+    position: relative;
+    background:
+      radial-gradient(60% 50% at 15% 10%, rgba(230, 217, 200, 0.55), transparent 60%),
+      radial-gradient(55% 45% at 85% 20%, rgba(138, 154, 134, 0.20), transparent 60%),
+      radial-gradient(70% 60% at 50% 100%, rgba(166, 124, 82, 0.14), transparent 60%),
+      var(--al-bg);
+  }
+
+  /* Cursor-follow botanical glow layer (Blueprint 15) */
+  .al-cursor-glow {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(
+      320px circle at var(--cursor-x, 50%) var(--cursor-y, 50%),
+      rgba(211, 84, 0, 0.12),
+      rgba(230, 217, 200, 0.10) 40%,
+      transparent 70%
+    );
+    transition: background 0.12s ease-out;
+  }
+
+  .al-btn-primary {
+    background-color: var(--al-primary);
+    color: var(--al-bg);
+    border-radius: 12px;
+    padding: 0.65rem 1.4rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease-out, transform 0.2s ease-out;
+  }
+  .al-btn-primary:hover {
+    background-color: var(--al-primary-600);
+    transform: translateY(-1px);
+  }
+
+  .al-section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  @media (min-width: 768px) {
+    .al-section {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+}
+
+/* Reduce blur on mobile/low-power for performance (Blueprint 18) */
+@media (max-width: 640px) {
+  .al-glass-card {
+    backdrop-filter: blur(10px) saturate(130%);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+  }
+}
+
+/* Disable cursor glow where there is no pointer (touch devices) */
+@media (hover: none) {
+  .al-cursor-glow {
+    display: none;
+  }
+}
+
+/* Fallback if backdrop-filter unsupported */
+@supports not (backdrop-filter: blur(1px)) {
+  .al-glass-card {
+    background: rgba(253, 251, 247, 0.92);
+  }
+}

@@ -1,0 +1,39 @@
+services:
+  # ── Backend (Spring Boot) ─────────────────────────────────────────
+  - type: web
+    name: aarohan-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /actuator/health
+    envVars:
+      # ── Database ──────────────────────────────────────────────────
+      - key: DB_URL
+        # Use the Internal Database URL from your Render PostgreSQL service
+        value: jdbc:postgresql://<RENDER_DB_INTERNAL_HOST>:5432/<DB_NAME>
+      - key: DB_USER
+        value: <DB_USER>
+      - key: DB_PASSWORD
+        sync: false          # set via Render dashboard secret
+
+      # ── JWT ───────────────────────────────────────────────────────
+      - key: JWT_SECRET
+        sync: false          # generate with: openssl rand -base64 32
+      - key: JWT_ACCESS_TTL
+        value: "900"
+      - key: JWT_REFRESH_TTL
+        value: "604800"
+
+      # ── CORS ──────────────────────────────────────────────────────
+      # Replace with your real Vercel frontend URL
+      - key: CORS_ORIGINS
+        value: https://your-frontend.vercel.app,https://aarohan.vercel.app
+
+      # ── Server ────────────────────────────────────────────────────
+      - key: SERVER_PORT
+        value: "8080"
+
+      # ── Demo seed ─────────────────────────────────────────────────
+      # Keep true for demo/staging; set false for production to skip seeding
+      - key: DEMO_SEED
+        value: "true"

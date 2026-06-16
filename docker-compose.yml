@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: artistlink
+      POSTGRES_USER: artistlink
+      POSTGRES_PASSWORD: artistlink
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U artistlink -d artistlink"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/artistlink
+      DB_USER: artistlink
+      DB_PASSWORD: artistlink
+      JWT_SECRET: c2VjcmV0LWtleS1mb3ItYXJ0aXN0bGluay1kZXYtb25seS1jaGFuZ2UtbWU=
+      CORS_ORIGINS: http://localhost:5173,http://localhost:3000,http://localhost
+      SERVER_PORT: 8080
+      DEMO_SEED: "true"
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+volumes:
+  pgdata:
