@@ -57,6 +57,7 @@ public class SecurityConfig {
                     "/artists/*/posts", "/venues/*/posts",
                     "/artists/*/profile-stats", "/venues/*/profile-stats",
                     "/posts/*").permitAll()
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
