@@ -53,11 +53,14 @@ public class SecurityConfig {
                     "/actuator/health", "/media-store/**"
                 ).permitAll()
                 // public reads of profiles, posts, feeds-of-author are allowed unauthenticated
-                .requestMatchers(HttpMethod.GET, "/artists/*", "/venues/*",
-                    "/artists/*/posts", "/venues/*/posts",
-                    "/artists/*/profile-stats", "/venues/*/profile-stats",
-                    "/posts/*").permitAll()
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.GET,
+    "/artists/*", "/venues/*",
+    "/artists/*/posts", "/venues/*/posts",
+    "/artists/*/profile-stats", "/venues/*/profile-stats",
+    "/posts/*",
+    "/opportunities",
+    "/opportunities/**"
+).permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
