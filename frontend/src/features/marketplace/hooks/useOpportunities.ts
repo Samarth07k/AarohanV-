@@ -8,6 +8,7 @@ export function useDiscoverOpportunities() {
     queryFn: ({ pageParam }) => opportunityService.discover(pageParam as string | undefined),
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (last) => last.nextCursor ?? undefined,
+    retry: false,
   });
 }
 

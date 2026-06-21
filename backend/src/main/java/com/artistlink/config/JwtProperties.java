@@ -9,7 +9,7 @@ public class JwtProperties {
     private long refreshTokenTtlSeconds = 604800;
 
     public String getSecret() { return secret; }
-    public void setSecret(String secret) { this.secret = secret; }
+    public void setSecret(String secret) { this.secret = secret == null ? null : secret.strip(); }
     public long getAccessTokenTtlSeconds() { return accessTokenTtlSeconds; }
     public void setAccessTokenTtlSeconds(long v) { this.accessTokenTtlSeconds = v; }
     public long getRefreshTokenTtlSeconds() { return refreshTokenTtlSeconds; }
