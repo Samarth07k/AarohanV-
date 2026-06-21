@@ -35,8 +35,8 @@ public class Opportunity {
     @Column(name = "budget_max")
     private Integer budgetMax;
 
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(nullable = false, columnDefinition = "opportunity_status")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private OpportunityStatus status = OpportunityStatus.OPEN;
 
     @CreationTimestamp
